@@ -2,7 +2,7 @@
    <div class="panel panel-default col-xs-6 pull-right">   
       <div class="col-xs-12 panel-heading">
          <h1>{{contact?.name}}</h1>
-            <img src="{{ contact?.imageUrl }}" alt="" class="img-responsive">
+            <img [src]="contact?.imageUrl" alt="{{contact?.name}}" class="img-responsive">
          <div class="pull-right">
             <button class="btn btn-primary dropdown-toggle">Edit
             </button>

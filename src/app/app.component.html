@@ -1,10 +1,10 @@
-<cms-header></cms-header>
+<cms-header (featureSelected)="onNavigate($event)"></cms-header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <cms-contact-list></cms-contact-list>
-      <cms-contact-detail></cms-contact-detail>
-      
+      <cms-contact-list *ngIf="loadedFeature === 'contacts'"></cms-contact-list>
+      <cms-contact-detail *ngIf="loadedFeature === 'contacts'" ></cms-contact-detail>
+      <cms-contact-item *ngIf="loadedFeature === 'contacts'"></cms-contact-item>
     </div>
   </div>
 </div>,

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+// import { EventEmitter } from 'stream';
+import { Contact } from '../contact.model';
 
 @Component({
   selector: 'cms-contact-item',
@@ -6,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contact-item.component.css']
 })
 export class ContactItemComponent implements OnInit {
+  @Input() contact: Contact;
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  
 }
