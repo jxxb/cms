@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  loadedFeature='contact';
+  loadedFeature='documents';
 
   onNavigate(feature: string) {
     this.loadedFeature = feature;

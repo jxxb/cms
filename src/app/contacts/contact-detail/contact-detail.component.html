@@ -1,38 +1,28 @@
-<!-- <div class="row"> -->
-   <div class="panel panel-default col-xs-6 pull-right">   
-      <div class="col-xs-12 panel-heading">
-         <h1>{{contact?.name}}</h1>
-            <img [src]="contact?.imageUrl" alt="{{contact?.name}}" class="img-responsive">
-         <div class="pull-right">
-            <button class="btn btn-primary dropdown-toggle">Edit
-            </button>
-            <button class="btn btn-danger dropdown-toggle">Delete
-            </button>
-         </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <h2>{{contact?.name}}</h2>
+        <div class="pull-left">
+          <img [src]="contact?.imageUrl" alt="{{contact?.name}}" class="img-responsive">
+        </div>
+        <div class="pull-right toolbar">
+          <button class="btn btn-primary dropdown-toggle">Edit
+          </button>
+          <button class="btn btn-danger dropdown-toggle">Delete
+          </button>
+        </div>
       </div>
-      <div class="panel-body">
-         <div class="row">
-            <div class="col-xs-12">
-               <h4>Email: {{contact?.email}}</h4>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-xs-12">
-               <h4>Phone: {{contact?.phone}}</h4>
-            </div>
-         </div>
-      </div>  
-   </div>
-<!-- </div>    -->
-   <!-- <div class="row">
-      <div class="col-xs-12">
-         <div class="btn-group">
-            <ul class="dropdown-menu">
-               <li><a href="#">Contact List</a></li>
-               <li><a href="#">Edit Contact</a></li>
-               <li><a href="#">Delete Contact</a></li>
-            </ul>
-         </div>
+    
+    <div class="panel-body">
+      <div class="list-group-item-heading">
+        Email: {{contact?.email}}
       </div>
-   </div> -->
-
+   
+    <div class="list-group-item-heading">
+      Phone: {{contact?.phone}}
+    </div>
+  </div> 
+</div>
+</div>
+</div>,
