@@ -7,9 +7,9 @@
           <img [src]="contact?.imageUrl" alt="{{contact?.name}}" class="img-responsive">
         </div>
         <div class="pull-right toolbar">
-          <button class="btn btn-primary dropdown-toggle">Edit
+          <button class="btn btn-primary dropdown-toggle" (click)="onEdit()">Edit
           </button>
-          <button class="btn btn-danger dropdown-toggle">Delete
+          <button class="btn btn-danger dropdown-toggle" (click)="onDelete()">Delete
           </button>
         </div>
       </div>

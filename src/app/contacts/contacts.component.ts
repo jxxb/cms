@@ -15,12 +15,12 @@ export class ContactsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.ContactServices.contactSelected
-    .subscribe(
-      (contact: Contact) => {
-        this.selectedContact = contact;
-      }
-    )
+    // this.ContactServices.contactSelected
+    // .subscribe(
+    //   (contact: Contact) => {
+    //     this.selectedContact = contact;
+    //   }
+    // )
   }
 
 }

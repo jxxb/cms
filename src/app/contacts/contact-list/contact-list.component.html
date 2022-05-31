@@ -5,16 +5,16 @@
         <span class="title">Contacts</span>
       </div>
       <div class="col-xs-3">
-        <button class="btn btn-success">New Contact</button>
+        <button class="btn btn-success" (click)="onNew()">New Contact</button>
       </div>
     </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-xs-12 margin-top">
           <cms-contact-item 
-          *ngFor="let contact of contacts" 
+          *ngFor="let contact of contacts; let i = index"
           [contact]="contact" 
-          (click)="onSelected(contact)">
+          [index]="i">
           </cms-contact-item>
         </div>
       </div>
