@@ -21,6 +21,10 @@ export class ContactListComponent implements OnInit {
     )
   }
 
+  // ngOnDestroy() : void {
+  //   this.
+  // }
+
   onNew() {
     this.router.navigate(['new'], {relativeTo: this.route});
   }
