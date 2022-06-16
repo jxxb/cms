@@ -12,26 +12,22 @@ import { DocumentService } from '../document.service';
 })
 export class DocumentListComponent implements OnInit { 
   documents: Document[] = [];
-  private changeSub:Subscription;
+  changeSub:Subscription;
 
-  constructor(private DocumentService: DocumentService,
-    private router: Router, private route: ActivatedRoute) { }
+  constructor(private DocumentService: DocumentService) { }
 
   ngOnInit(): void {
-    this.documents = this.DocumentService.getDocuments();
     this.changeSub = this.DocumentService.documentChangedEvent
     .subscribe(
       (documents:Document[]) => {
         this.documents = documents;
       }
     );
+
+    this.documents = this.DocumentService.getDocuments();
   }
 
   ngOnDestroy(): void {
     this.changeSub.unsubscribe();
-  }
-
-  onNewDocument() {
-    this.router.navigate(['new'], {relativeTo: this.route});
   }
 }

@@ -26,10 +26,6 @@ export class ContactService {
     return this.contacts.find((contact) => contact.id === id);
   }   
 
-  get_Contact(id: number){
-    return this.contacts[id];
-  }   
-
   deleteContact(contact: Contact) {
     if(!contact) {
       return;
@@ -55,7 +51,7 @@ export class ContactService {
   }
 
   addContact(newContact: Contact){
-    if(newContact === undefined || null){
+    if(!newContact){
       return;
     }
     this.maxContactId++;
@@ -67,7 +63,7 @@ export class ContactService {
   }
   
   updateContact(originalContact:Contact, newContact: Contact) {
-    if(originalContact || newContact === undefined || null) {
+    if(!originalContact || !newContact) {
       return;
     }
 

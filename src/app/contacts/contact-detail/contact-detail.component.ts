@@ -9,7 +9,7 @@ import { ContactService } from '../contact.service';
 })
 export class ContactDetailComponent implements OnInit {
   contact: Contact;
-  id: number;
+  id: string;
   
   constructor(private ContactService:ContactService,
     private route: ActivatedRoute, private router: Router) { }
@@ -18,8 +18,8 @@ export class ContactDetailComponent implements OnInit {
     this.route.params
     .subscribe(
       (params: Params) => {
-        this.id = +params['id'];
-        this.contact = this.ContactService.get_Contact(this.id);
+        this.id = params['id'];
+        this.contact = this.ContactService.getContact(this.id);
       }
     );
   }

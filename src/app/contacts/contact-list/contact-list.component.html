@@ -5,16 +5,19 @@
         <span class="title">Contacts</span>
       </div>
       <div class="col-xs-3">
-        <button class="btn btn-success" (click)="onNew()">New Contact</button>
+        <button [routerLink]="['new']" class="btn btn-success">New Contact</button>
       </div>
     </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-xs-12 margin-top">
           <cms-contact-item 
-          *ngFor="let contact of contacts; let i = index"
-          [contact]="contact" 
-          [index]="i">
+          *ngFor="let contact of contacts"
+          [contact]="contact"
+          dnd-draggable 
+          [dragEnabled]="true" 
+          [dragData]="contact" 
+          [dropZones]="['contactGroup']">
           </cms-contact-item>
         </div>
       </div>

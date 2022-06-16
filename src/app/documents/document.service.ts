@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DocumentListComponent } from './document-list/document-list.component';
-
 import { Document } from './document.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 
@@ -22,8 +20,13 @@ export class DocumentService {
     return this.documents.slice();
   }
 
-  getDocument(id: number){
-    return this.documents[id];
+  getDocument(id: string):Document{
+    for (const document of this.documents) {
+      if(document.id === id) {
+        return document;
+      }
+    }
+    return null;
   }
 
   deleteDocument(document: Document) {
@@ -51,7 +54,7 @@ export class DocumentService {
   }
 
   addDocument(newDocument: Document) {
-    if(newDocument === undefined || newDocument === null) {
+    if(!newDocument) {
       return;
     }
     this.maxDocumentId++;
@@ -63,7 +66,7 @@ export class DocumentService {
   }
 
   updateDocument(originalDocument:Document,newDocument: Document) {
-    if(originalDocument || newDocument === undefined || null) {
+    if(!originalDocument || !newDocument) {
       return;
     }
 

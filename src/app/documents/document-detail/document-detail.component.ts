@@ -12,7 +12,7 @@ import { DocumentService } from '../document.service';
 })
 export class DocumentDetailComponent implements OnInit {
 document: Document;
-id: number;
+id: string;
 nativeWindow: any;
 
   constructor(private DocumentService:DocumentService,
@@ -25,7 +25,7 @@ nativeWindow: any;
     this.route.params
     .subscribe(
       (params: Params) => {
-        this.id = +params['id'];
+        this.id = params['id'];
         this.document = this.DocumentService.getDocument(this.id);
       }
     )
@@ -42,8 +42,8 @@ nativeWindow: any;
   }
 
   onDelete() {
-   this.DocumentService.deleteDocument(this.document);
-   this.router.navigateByUrl('/documents');
+    this.DocumentService.deleteDocument(this.document);
+    this.router.navigateByUrl('/documents');
   }
 
 }

@@ -1,1 +1,105 @@
-<p>Select Cantact Edit here</p>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control required"
+            name="name"
+            size="120"
+            max="120"
+            [ngModel]="contact?.name"
+            required
+            #name="ngModel"
+            >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="email">Email:</label>
+          <input
+            type="text"
+            id="email"
+            class="form-control required"
+            name="email"
+            size="120"
+            max="255"
+            [ngModel]="contact?.email"
+            required
+            #email="ngModel"
+            >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="phone">Phone:</label>
+          <input
+            type="text"
+            id="phone"
+            class="form-control invalid"
+            name="phone"
+            size="150"
+            max="255"
+            [ngModel]="contact?.phone"
+            required
+            #phone="ngModel"
+            pattern="^[1-9]+[0-9]*$"
+            >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="imageUrl">Image URL:</label>
+          <input
+            type="text"
+            id="imageUrl"
+            class="form-control"
+            name="image"
+            size="150"
+            max="255"
+            [ngModel]="contact?.imageUrl"
+            required
+            #url="ngModel"
+            >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label for="groupList">Group Contacts:</label>
+          <div class="row"
+          id="groupList"
+          style="min-height: 3rem;" 
+          dnd-droppable 
+          [dropZones]="['contactGroup']" 
+          (onDropSuccess)="addToGroup($event)">
+
+            <div *ngFor="let contact of groupContacts; let i = index">
+              <div>
+                <cms-contact-item 
+                class="col-sm-11" 
+                [contact]="contact">
+              </cms-contact-item>
+                <button class="btn btn-danger col-sm-2 deleteButton"
+                (click)="onRemoveItem(i)"
+                  >
+                  X</button>
+              </div>
+            </div>
+            <span class="dragMsg" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
+          </div>
+        </div>
+      </div>
+    <div class="alert alert-danger" *ngIf="(name.touched && name.invalid) || (email.touched && email.invalid)">The Contact Name and Email are required fields</div>
+      <div class="row">
+        <div class="col-xs-12 btn-toolbar">
+          <button class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-primary" (click)="onCancel()" type="button">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
