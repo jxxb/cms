@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Document } from './document.model';
@@ -11,12 +12,33 @@ export class DocumentService {
   maxDocumentId: number;
   private documents: Document[] = [];
 
-  constructor() {
+  constructor(private http:HttpClient) {
     this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
   }
+
+  storeDocuments() {
+    const documents = JSON.stringify(this.getDocuments());
+    this.http.put('https://angular-7a03c-default-rtdb.firebaseio.com/documents.json', documents).subscribe(
+      ()=>{
+        this.documentChangedEvent.next(this.documents.slice());
+      }
+    )
+  }
   
   getDocuments(){
+    this.http.get('https://angular-7a03c-default-rtdb.firebaseio.com/documents.json').subscribe(
+      (documents:Document[] = [])=>{
+        this.documents = documents;
+        this.maxDocumentId = this.getMaxId();
+        this.documents.sort((a,b)=>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        );
+        this.documentChangedEvent.next(this.documents.slice());
+      }, (error:any)=>{
+        console.log(error);
+      }
+    );
     return this.documents.slice();
   }
 
@@ -38,8 +60,7 @@ export class DocumentService {
       return;
     }
     this.documents.splice(pos, 1);
-    
-    this.documentChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 
   getMaxId(): number {
@@ -60,9 +81,7 @@ export class DocumentService {
     this.maxDocumentId++;
     newDocument.id = String(this.maxDocumentId);
     this.documents.push(newDocument);
-    let documentListClone = this.documents.slice();
-
-    this.documentChangedEvent.next(documentListClone);
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument:Document,newDocument: Document) {
@@ -77,8 +96,7 @@ export class DocumentService {
 
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
-    let DocumentListClone = this.documents.slice();
-    this.documentChangedEvent.next(DocumentListClone);
+    this.storeDocuments();
   }
 }
 

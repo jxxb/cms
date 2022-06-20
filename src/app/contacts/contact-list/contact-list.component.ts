@@ -12,6 +12,7 @@ import { ContactService } from '../contact.service';
 export class ContactListComponent implements OnInit {
   contacts: Contact[] = [];
   subscription: Subscription;
+  term: string;
 
   constructor(private ContactService: ContactService) { }
 
@@ -30,7 +31,7 @@ export class ContactListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  // onNew() {
-  //   this.router.navigate(['new'], {relativeTo: this.route});
-  // }
+  search(value:string){
+    this.term = value;
+  }
 }

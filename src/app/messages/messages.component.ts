@@ -14,11 +14,11 @@ export class MessagesComponent implements OnInit {
   constructor(private MessageServices:MessageService) { }
 
   ngOnInit(): void {
-    this.MessageServices.messageChanged.subscribe(
-      (message:Message) => {
-        this.selectedMessage = message;
-      }
-    )
+    // this.MessageServices.messageChangedEvent.subscribe(
+    //   () => {
+    //     this.selectedMessage = message;
+    //   }
+    // )
   }
 
 }
