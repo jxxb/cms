@@ -11,7 +11,6 @@ export class DocumentItemComponent implements OnInit {
 @Input() index: number;
 
   constructor() { }
-
   ngOnInit(): void {
   }
 

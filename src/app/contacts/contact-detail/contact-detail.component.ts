@@ -8,7 +8,7 @@ import { ContactService } from '../contact.service';
   styleUrls: ['./contact-detail.component.css']
 })
 export class ContactDetailComponent implements OnInit {
-  contact: Contact;
+  contact:Contact;
   id: string;
   
   constructor(private ContactService:ContactService,
@@ -19,7 +19,9 @@ export class ContactDetailComponent implements OnInit {
     .subscribe(
       (params: Params) => {
         this.id = params['id'];
-        this.contact = this.ContactService.getContact(this.id);
+        this.ContactService.getContact(this.id).subscribe((contactData)=>{
+          this.contact = contactData.contact;
+        });
       }
     );
   }

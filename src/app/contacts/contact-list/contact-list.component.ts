@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service';
@@ -24,12 +23,12 @@ export class ContactListComponent implements OnInit {
       }
     );
 
-    this.contacts = this.ContactService.getContacts();
+    this.ContactService.getContacts();
   }
 
-  ngOnDestroy() : void {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() : void {
+  //   this.subscription.unsubscribe();
+  // }
 
   search(value:string){
     this.term = value;

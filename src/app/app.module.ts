@@ -52,7 +52,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
     FormsModule,
     DndModule.forRoot(),
   ],
-  providers: [MessageService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

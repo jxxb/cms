@@ -32,7 +32,7 @@ id: string;
       return;
   }
 
-  this.originalDocument = this.documentService.getDocument(this.id);
+  this.documentService.getDocument(this.id);
 
     if (!this.originalDocument) {
       return;

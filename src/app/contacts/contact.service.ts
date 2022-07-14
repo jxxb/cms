@@ -1,96 +1,79 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Contact } from './contact.model';
-import { MOCKCONTACTS } from './MOCKCONTACTS';
 @Injectable({
   providedIn: 'root'
 })
 
 export class ContactService {
   contactChangedEvent = new Subject<Contact[]>();
-  maxContactId:number;
   private contacts: Contact[] = [];
+  constructor(private http:HttpClient) {}
 
-  constructor(private http:HttpClient) { 
-    this.contacts = MOCKCONTACTS;
-    this.maxContactId = this.getMaxId();
+  sortAndSend(){
+    this.contacts.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0);
+    this.contactChangedEvent.next(this.contacts.slice());
   }
-
-  storeContacts(){
-    const contacts = JSON.stringify(this.getContacts());
-    this.http.put('https://angular-7a03c-default-rtdb.firebaseio.com/contacts.json', contacts).subscribe(
-      ()=>{
-        this.contactChangedEvent.next(this.contacts.slice());
-      }
-    )
-  }
-
+  getContact(id: string){
+    return this.http.get<{message: string, contact:Contact}>('http://localhost:3000/contacts/' + id);
+  } 
   getContacts(){
-    this.http.get('https://angular-7a03c-default-rtdb.firebaseio.com/contacts.json').subscribe(
-      (contacts:Contact[]=[])=>{
-        this.contacts=contacts;
-        this.maxContactId = this.getMaxId();
-        this.contacts.sort((a,b)=>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        );
-        this.contactChangedEvent.next(this.contacts.slice());
+    this.http.get<{message:string,contacts:Contact[]}>('http://localhost:3000/contacts/').subscribe(
+      (responseData)=>{
+        this.contacts=responseData.contacts;
+        this.sortAndSend();
       }, (error:any)=>{
         console.log(error);
       }
     );
-    return this.contacts.slice();
   }
-
-  getContact(id: string){
-    return this.contacts.find((contact) => contact.id === id);
-  }   
-
-  deleteContact(contact: Contact) {
-    if(!contact) {
+  addContact(contact: Contact){
+    if(!contact){
       return;
     }
-    const pos = this.contacts.indexOf(contact);
-    if(pos < 0) {
-      return;
-    }
-    this.contacts.splice(pos, 1);
-    this.storeContacts();
-  }
-
-  getMaxId():number{
-    let maxId = 0;
-    for(let contact of this.contacts){
-      let currentId = +contact.id;
-      if(currentId > maxId){
-        maxId = currentId;
+    contact.id='';
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    this.http.post<{message:string,contact:Contact}>(
+      'http://localhost:3000/contacts',contact,{headers:headers})
+      .subscribe((responseData)=>{
+        this.contacts.push(responseData.contact);
+        this.sortAndSend();
       }
-    }
-    return maxId;
+    );
   }
-
-  addContact(newContact: Contact){
-    if(!newContact){
-      return;
-    }
-    this.maxContactId++;
-    newContact.id = String(this.maxContactId);
-    this.contacts.push(newContact);
-    this.storeContacts();
-  }
-  
   updateContact(originalContact:Contact, newContact: Contact) {
     if(!originalContact || !newContact) {
       return;
     }
-
-    let pos = this.contacts.indexOf(originalContact);
+    const pos = this.contacts.findIndex(c=>c.id===originalContact.id); 
       if(pos<0){
         return;
       }
-    
     newContact.id = originalContact.id;
-    this.contacts[pos] = newContact;
-    this.storeContacts();
+    const headers = new HttpHeaders({'Content-Type':'application/json'})
+    this.http.put( 'http://localhost:3000/contacts/' + originalContact.id,
+    newContact, {headers:headers})
+    .subscribe(
+      (response:Response)=>{
+      this.contacts[pos] = newContact;
+      this.sortAndSend();
+    })
+  }
+  
+  deleteContact(contact: Contact) {
+    if(!contact) {
+      return;
+    }
+    const pos = this.contacts.findIndex(c=>c.id===contact.id); 
+    if(pos < 0) {
+      return;
+    }
+    this.http.delete('http://localhost:3000/contacts/' + contact.id).subscribe(
+      (response:Response)=>{
+        this.contacts.splice(pos,1);
+        this.sortAndSend();
+      }
+    );
   }
 }

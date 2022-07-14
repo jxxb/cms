@@ -1,7 +1,6 @@
 import { Message } from './messages.model';
 import { Injectable, EventEmitter } from '@angular/core';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -9,53 +8,45 @@ import { Subject } from 'rxjs';
 })
 export class MessageService {
   messageChangedEvent = new Subject<Message[]>();
-  maxMessageId: number;
   private messages: Message[] = [];
+  constructor(private http:HttpClient) { }
 
-  constructor(private http:HttpClient) {
-    this.messages = MOCKMESSAGES;
-    this.maxMessageId = this.getMaxId();
-  }
-
-  getMaxId():number{
-    let maxId = 0;
-    for (let message of this.messages){
-      let currentId = +message.id;
-      if(currentId>maxId){
-        maxId = currentId;
-      }
-    }
-    return maxId;
-  }
-
-  storeMessages(){
-    const messages = JSON.stringify(this.getMessages());
-    this.http.put('https://angular-7a03c-default-rtdb.firebaseio.com/messages.json',messages).subscribe(()=>{
-      this.messageChangedEvent.next(this.messages.slice());
-      }
-    )
+  sortAndSend(){
+    // this.messages.sort((a,b)=>a.id>b.id?1:b.id>a.id?-1:0)
+    this.messageChangedEvent.next(this.messages.slice());
+  }  
+  
+  getMessage(id:string){
+    return this.http.get<{message:string, messages:Message}>('http://localhost:3000/messages/' + id);
   }
 
   getMessages(){
-    this.http.get('https://angular-7a03c-default-rtdb.firebaseio.com/messages.json').subscribe(
-      (messages:Message[]=[])=>{
-        this.messages=messages;
-        this.maxMessageId = this.getMaxId();
-        this.messages.sort((a,b)=>
-          a.sender > b.sender ? 1 : b.sender > a.sender ? -1 : 0
-        )
-      } 
-    )
-    return this.messages.slice();
-  }
-
-  getMessage(id:string){
-    return this.messages.find((message) => message.id === id);
+    this.http.get<{message:string,messages:Message[]}>('http://localhost:3000/messages/').subscribe(
+      (msgData)=>{
+        this.messages=msgData.messages;
+        console.log(msgData);
+        this.sortAndSend();
+      }, (error:any)=>{
+        console.log(error);
+      }
+    );
   }
 
   addMessage(message: Message) {
-  this.messages.push(message);
-  this.storeMessages();
+    if(!message){
+      return;
+    }
+    message.id='';
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    this.http.post<{message:string,msg:Message}>(
+      'http://localhost:3000/messages',message,{headers:headers})
+      .subscribe((msgData)=>{
+        message._id = msgData.msg._id;
+        message.id = msgData.msg.id;
+        this.messages.push(msgData.msg);
+        this.sortAndSend();
+      }
+    );
 }
 
 }
