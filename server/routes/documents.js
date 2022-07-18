@@ -24,7 +24,7 @@ router.get('/:id',(req,res,next) => {
    Document.findOne({
       "id": req.params.id
    })
-   .populate('name')
+   // .populate('name')
    .then(document => {
          res.status(200).json({
          message: 'Document fetched successfully!',
@@ -41,18 +41,17 @@ router.get('/:id',(req,res,next) => {
 
 router.post('/', (req, res, next) => {
 const maxDocumentId = sequenceGenerator.nextId("documents");
-
 const document = new Document({
    id: maxDocumentId,
    name: req.body.name,
    description: req.body.description,
    url: req.body.url
 });
-
-document.save()
-   .then(createdDocument => {
+document
+.save()
+   .then((createdDocument) => {
       res.status(201).json({
-      message: 'Document added successfully',
+      response: 'Document added successfully',
       document: createdDocument
       });
    })
@@ -70,11 +69,12 @@ Document.findOne({ id: req.params.id })
       document.name = req.body.name;
       document.description = req.body.description;
       document.url = req.body.url;
+      // document.children = req.body.children;
 
       Document.updateOne({ id: req.params.id }, document)
       .then(result => {
          res.status(204).json({
-            message: 'Document updated successfully'
+         message: 'Document updated successfully'
          })
       })
       .catch(error => {

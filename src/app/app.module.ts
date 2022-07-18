@@ -17,13 +17,12 @@ import { MessageItemComponent } from './messages/message-item/message-item.compo
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
 import { DropdownDirective } from './dropdown.directive';
-import { MessageService } from './messages/message.service';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 import { FormsModule } from '@angular/forms';
 import { DndModule } from 'ng2-dnd';
 import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 @NgModule({
   declarations: [
     AppComponent,

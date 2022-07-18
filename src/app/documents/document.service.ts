@@ -17,7 +17,9 @@ export class DocumentService {
     this.documentChangedEvent.next(this.documents.slice());
   }
   getDocument(id: string){
-    return this.http.get<{message:string,documents:Document}>('http://localhost:3000/documents/' + id);
+    console.log(id);
+    return this.http.get<{message:string,document:Document}>('http://localhost:3000/documents/' + id);
+    
   }
   getDocuments(){
     this.http.get<{message:string,documents:Document[]}>('http://localhost:3000/documents/').subscribe(
@@ -30,44 +32,43 @@ export class DocumentService {
       }
     );
   }
-  addDocument(newDocument: Document) {
-    if(!newDocument) {
+
+  addDocument(document: Document) {
+    if(!document) {
       return;
     }
-    newDocument.id='';
+    document.id='';
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    this.http.post<{message:string,document:Document}>(
-      'http://localhost:3000/documents/',document,{headers:headers}).subscribe((documentData)=>{
-        this.documents.push(documentData.document)
+    this.http.post<{response:string,document:Document}>(
+      'http://localhost:3000/documents',document,{headers:headers}).subscribe((docData)=>{
+        this.documents.push(docData.document);
       this.sortAndSend();
       }
     );
   }
+
  updateDocument(originalDocument:Document,newDocument: Document) {
-    if(!originalDocument || !newDocument) {
-      return;
-    }
-    const pos = this.documents.findIndex(c=>c.id===originalDocument.id); 
-    // let pos = this.documents.indexOf(originalDocument);
-    if(pos < 0){
-      return;
-    }
+    if(!originalDocument||!newDocument) {return;}
+
+    const pos = this.documents.findIndex(d=>d.id===originalDocument.id); 
+
+    if(pos < 0){return;}
+
     newDocument.id = originalDocument.id;
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    this.http.put('http://localhost:3000/documents/' + originalDocument.id,newDocument,{headers:headers}).subscribe((response:Response)=>{
+    this.http.put('http://localhost:3000/documents/' + originalDocument.id,
+    newDocument,{headers:headers})
+    .subscribe(
+      (response:Response)=>{
         this.documents[pos] = newDocument;
         this.sortAndSend();
         })
   }
+
   deleteDocument(document: Document) {
-    if(!document) {
-      return;
-    }
-    const pos = this.documents.findIndex(c=>c.id===document.id); 
-    //const pos = this.documents.indexOf(document);
-    if(pos < 0) {
-      return;
-    }
+    if(!document) {return;}
+    const pos = this.documents.findIndex(d=>d.id===document.id); 
+    if(pos < 0) {return;}
     this.http.delete('http://localhost:3000/documents/' + document.id).subscribe(
       (response:Response)=>{
         this.documents.splice(pos, 1);

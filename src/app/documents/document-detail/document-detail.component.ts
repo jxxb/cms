@@ -26,7 +26,10 @@ nativeWindow: any;
     .subscribe(
       (params: Params) => {
         this.id = params['id'];
-        this.DocumentService.getDocument(this.id);
+        this.DocumentService.getDocument(this.id)
+        .subscribe((docData)=>{
+          this.document = docData.document;
+        });
       }
     )
   }

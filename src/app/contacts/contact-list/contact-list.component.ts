@@ -16,6 +16,7 @@ export class ContactListComponent implements OnInit {
   constructor(private ContactService: ContactService) { }
 
   ngOnInit(): void {
+    this.subscription =
     this.ContactService.contactChangedEvent
     .subscribe(
       (contacts:Contact[]) => {
@@ -26,9 +27,9 @@ export class ContactListComponent implements OnInit {
     this.ContactService.getContacts();
   }
 
-  // ngOnDestroy() : void {
-  //   this.subscription.unsubscribe();
-  // }
+  ngOnDestroy() : void {
+    this.subscription.unsubscribe();
+  }
 
   search(value:string){
     this.term = value;

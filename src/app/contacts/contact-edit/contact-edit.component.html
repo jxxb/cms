@@ -96,7 +96,8 @@
     <div class="alert alert-danger" *ngIf="(name.touched && name.invalid) || (email.touched && email.invalid)">The Contact Name and Email are required fields</div>
       <div class="row">
         <div class="col-xs-12 btn-toolbar">
-          <button class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid"> 
+            {{editMode ? 'Update' : 'Save'}}</button>
           <button class="btn btn-primary" (click)="onCancel()" type="button">Cancel</button>
         </div>
       </div>

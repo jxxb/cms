@@ -38,12 +38,12 @@ export class MessageService {
     }
     message.id='';
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    this.http.post<{message:string,msg:Message}>(
+    this.http.post<{response:string,newMessage:Message}>(
       'http://localhost:3000/messages',message,{headers:headers})
       .subscribe((msgData)=>{
-        message._id = msgData.msg._id;
-        message.id = msgData.msg.id;
-        this.messages.push(msgData.msg);
+        message._id = msgData.newMessage._id;
+        message.id = msgData.newMessage.id;
+        this.messages.push(message);
         this.sortAndSend();
       }
     );

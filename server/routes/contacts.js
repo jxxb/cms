@@ -49,7 +49,6 @@ router.post('/', (req,res,next)=>{
       imageUrl: req.body.imageUrl,
       group: req.body.group
    });
-
    contact
    .save()
    .then((createdContact)=>{
@@ -80,7 +79,7 @@ router.put('/:id', (req, res, next) => {
       Contact.updateOne({ id: req.params.id }, contact)
          .then(result => {
             res.status(204).json({
-            message: 'Contact updated successfully'
+            message:'Contact updated successfully'
          })
          })
          .catch(error => {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Contact } from '../contact.model';
@@ -11,19 +11,17 @@ import { ContactService } from '../contact.service';
   styleUrls: ['./contact-edit.component.css'],
 })
 export class ContactEditComponent implements OnInit {
-  @ViewChild('f') cForm: NgForm;
+  // @ViewChild('f') cForm: NgForm;
   editMode = false;
   originalContact: Contact;
   contact: Contact;
   id: string;
   groupContacts: Contact[] = [];
-
   constructor(
     private route: ActivatedRoute,
     private contactService: ContactService,
     private router: Router
   ) {}
-
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
@@ -52,7 +50,7 @@ export class ContactEditComponent implements OnInit {
       value.name,
       value.email,
       value.phone,
-      value.url,
+      value.imageUrl,
       this.groupContacts
     );
     if (this.editMode) {

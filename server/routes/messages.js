@@ -52,8 +52,8 @@ const message = new Message({
 message.save()
    .then(createdMessage => {
       res.status(201).json({
-      message: 'Message added successfully',
-      message: createdMessage
+      response: 'Message added successfully',
+      newMessage: createdMessage
       });
    })
    .catch(error => {
